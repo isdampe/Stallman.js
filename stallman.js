@@ -11,7 +11,7 @@ var server = net.createServer(function(c) {
 
 });
 
-server.listen(2100, function() {
+server.listen(23, function() {
   console.log('Listening');
 });
 

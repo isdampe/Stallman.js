@@ -25,7 +25,7 @@ var doCommand = function(command, socket) {
     email = buf[1];
     var reg = new RegExp("\r\n",'g');
     email = email.replace(reg,'');
-    
+
     socket.write("Fetching your data now.\r\n");
 
     request(url, function(err,res,body){

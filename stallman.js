@@ -11,7 +11,7 @@ var server = net.createServer(function(c) {
 
 });
 
-server.listen(2100, function() {
+server.listen(23, function() {
   console.log('Listening');
 });
 
@@ -23,6 +23,9 @@ var doCommand = function(command, socket) {
 
     url = buf[0];
     email = buf[1];
+    var reg = new RegExp("\r\n",'g');
+    email = email.replace(reg,'');
+    
     socket.write("Fetching your data now.\r\n");
 
     request(url, function(err,res,body){

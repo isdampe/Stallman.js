@@ -1,6 +1,6 @@
 var net = require("net");
 var request = require("request");
-var sendmail = require("sendmail");
+var Email = require('email').Email;
 
 var server = net.createServer(function(c) {
 
@@ -40,24 +40,22 @@ var doCommand = function(command, socket) {
 
       socket.write("Data found.\r\nSending your data via email now.\r\n");
 
-      //Send email with data.
-      sendmail({
-          from: 'richard@stallman.org',
-          to: email,
-          subject: 'Your HTML data from Richard Stallman',
-          content: body,
-        }, function(err, reply) {
-          if ( err ) {
-            console.log(err);
-            socket.write("Error sending email\r\n");
-            socket.write(err);
-          } else {
-            socket.write("Your HTML data has been delivered to your email inbox.\r\n");
-            socket.write("If you run a commercial non-free mail filter, you will need to check your spam folder.\r\n");
-          }
-
-          return true;
+      var myMsg = new Email({
+        from: "richard@stallman.org",
+        to: email,
+        subject: "Your HTML data from Richard Stallman",
+        body: body
       });
+
+      myMsg.send(function(err){
+        if ( err ) {
+          socket.write("Error sending mail\r\n");
+          console.log(err);
+        }
+      });
+
+      socket.write("Your HTML data has been delivered to your email inbox.\r\n");
+      socket.write("If you run a commercial non-free mail filter, you will need to check your spam folder.\r\n");
 
     });
 
